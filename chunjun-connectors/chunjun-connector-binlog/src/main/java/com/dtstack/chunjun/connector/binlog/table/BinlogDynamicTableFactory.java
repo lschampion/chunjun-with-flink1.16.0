@@ -24,7 +24,8 @@ import com.dtstack.chunjun.constants.ConstantValue;
 
 import org.apache.flink.configuration.ConfigOption;
 import org.apache.flink.configuration.ReadableConfig;
-import org.apache.flink.formats.json.JsonOptions;
+import org.apache.flink.formats.common.TimestampFormat;
+import org.apache.flink.formats.json.JsonFormatOptions;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.factories.DynamicTableSourceFactory;
@@ -80,7 +81,7 @@ public class BinlogDynamicTableFactory implements DynamicTableSourceFactory {
         options.add(BinlogOptions.IS_GTID_MODE);
         options.add(BinlogOptions.QUERY_TIME_OUT);
         options.add(BinlogOptions.CONNECT_TIME_OUT);
-        options.add(JsonOptions.TIMESTAMP_FORMAT);
+        options.add(JsonFormatOptions.TIMESTAMP_FORMAT);
         return options;
     }
 
@@ -98,9 +99,16 @@ public class BinlogDynamicTableFactory implements DynamicTableSourceFactory {
         TableSchema physicalSchema =
                 TableSchemaUtils.getPhysicalSchema(context.getCatalogTable().getSchema());
         BinlogConf binlogConf = getBinlogConf(config);
-
-        return new BinlogDynamicTableSource(
-                physicalSchema, binlogConf, JsonOptions.getTimestampFormat(config));
+        String tfStr = config.get(JsonFormatOptions.TIMESTAMP_FORMAT);
+        TimestampFormat timestampFormat = TimestampFormat.SQL;
+        if (tfStr != null && tfStr.toUpperCase().equals(TimestampFormat.SQL.toString())) {
+            timestampFormat = TimestampFormat.SQL;
+        } else if (tfStr != null
+                && tfStr.toUpperCase().equals(TimestampFormat.ISO_8601.toString())) {
+            timestampFormat = TimestampFormat.ISO_8601;
+        }
+        // default is SQL
+        return new BinlogDynamicTableSource(physicalSchema, binlogConf, timestampFormat);
     }
 
     /**

@@ -23,7 +23,8 @@ import com.dtstack.chunjun.connector.sqlservercdc.source.SqlServerCdcDynamicTabl
 
 import org.apache.flink.configuration.ConfigOption;
 import org.apache.flink.configuration.ReadableConfig;
-import org.apache.flink.formats.json.JsonOptions;
+import org.apache.flink.formats.common.TimestampFormat;
+import org.apache.flink.formats.json.JsonFormatOptions;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.factories.DynamicTableSourceFactory;
@@ -65,7 +66,7 @@ public class SqlservercdcDynamicTableFactory implements DynamicTableSourceFactor
         options.add(SqlServerCdcOptions.CAT);
         options.add(SqlServerCdcOptions.LSN);
         options.add(SqlServerCdcOptions.POLLINTERVAL);
-        options.add(JsonOptions.TIMESTAMP_FORMAT);
+        options.add(JsonFormatOptions.TIMESTAMP_FORMAT);
         return options;
     }
 
@@ -83,9 +84,15 @@ public class SqlservercdcDynamicTableFactory implements DynamicTableSourceFactor
         TableSchema physicalSchema =
                 TableSchemaUtils.getPhysicalSchema(context.getCatalogTable().getSchema());
         SqlServerCdcConf serverCdcConf = getSqlServerCdcConf(config);
-
-        return new SqlServerCdcDynamicTableSource(
-                physicalSchema, serverCdcConf, JsonOptions.getTimestampFormat(config));
+        String tfStr = config.get(JsonFormatOptions.TIMESTAMP_FORMAT);
+        TimestampFormat timestampFormat = TimestampFormat.SQL;
+        if (tfStr != null && tfStr.toUpperCase().equals(TimestampFormat.SQL.toString())) {
+            timestampFormat = TimestampFormat.SQL;
+        } else if (tfStr != null
+                && tfStr.toUpperCase().equals(TimestampFormat.ISO_8601.toString())) {
+            timestampFormat = TimestampFormat.ISO_8601;
+        }
+        return new SqlServerCdcDynamicTableSource(physicalSchema, serverCdcConf, timestampFormat);
     }
 
     /**

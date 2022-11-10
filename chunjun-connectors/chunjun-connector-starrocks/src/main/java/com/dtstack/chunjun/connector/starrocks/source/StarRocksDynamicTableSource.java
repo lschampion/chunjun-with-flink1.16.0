@@ -38,7 +38,6 @@ import org.apache.flink.table.connector.source.abilities.SupportsProjectionPushD
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.table.runtime.typeutils.InternalTypeInfo;
 import org.apache.flink.table.types.logical.RowType;
-import org.apache.flink.table.utils.TableSchemaUtils;
 import org.apache.flink.util.Preconditions;
 
 import java.util.ArrayList;
@@ -131,8 +130,8 @@ public class StarRocksDynamicTableSource
         return false;
     }
 
-    @Override
-    public void applyProjection(int[][] projectedFields) {
-        this.tableSchema = TableSchemaUtils.projectSchema(tableSchema, projectedFields);
-    }
+    //    @Override
+    //    public void applyProjection(int[][] projectedFields) {
+    //        this.tableSchema = TableSchemaUtils.projectSchema(tableSchema, projectedFields);
+    //    }
 }

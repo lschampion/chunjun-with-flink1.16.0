@@ -22,8 +22,6 @@ import com.dtstack.chunjun.connector.hbase.conf.HBaseConf;
 import com.dtstack.chunjun.security.KerberosUtil;
 import com.dtstack.chunjun.util.FileSystemUtil;
 
-import org.apache.flink.runtime.util.ExecutorThreadFactory;
-
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -231,7 +229,9 @@ public class HBaseHelper {
     public static void scheduleRefreshTGT(UserGroupInformation ugi) {
         final ScheduledExecutorService executor =
                 Executors.newSingleThreadScheduledExecutor(
-                        new ExecutorThreadFactory("UserGroupInformation-Relogin"));
+                        Executors.defaultThreadFactory() //  new
+                        // ExecutorThreadFactory("UserGroupInformation-Relogin")
+                        );
 
         executor.scheduleWithFixedDelay(
                 new Runnable() {

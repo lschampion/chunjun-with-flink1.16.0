@@ -39,6 +39,7 @@ public class LocalTest {
     public static Logger LOG = LoggerFactory.getLogger(LocalTest.class);
 
     public static void main(String[] args) throws Exception {
+        //        System.setProperty("user.timezone","GMT+8");
         LOG.warn("-----");
         Properties confProperties = new Properties();
         //        confProperties.setProperty("flink.checkpoint.interval", "30000");
@@ -47,8 +48,15 @@ public class LocalTest {
         //        confProperties.setProperty("state.checkpoints.dir", "file:///ck");
         String userDir = System.getProperty("user.dir");
 
-        String jobPath = userDir + "/chunjun-examples/sql/stream/stream.sql";
+        //        String jobPath = userDir +
+        // "/chunjun-examples/json/mytest/mysql_stream_realtime.json";
+        String jobPath =
+                userDir + "/chunjun-examples/json/mytest/mysql_stream_cdc_transform-demo.json";
+        //        String jobPath = userDir +
+        // "/chunjun-examples/json/mytest/mysql_mysql_cdc_transform-demo.json";
+        //        String jobPath = userDir + "/chunjun-examples/sql/stream/stream.sql";
         String chunjunDistDir = userDir + "/chunjun-dist";
+        System.out.println("chunjunDistDir: " + chunjunDistDir);
         String s = "";
 
         // 任务配置参数
@@ -64,6 +72,8 @@ public class LocalTest {
             argsList.add("sync");
             argsList.add("-job");
             argsList.add(URLEncoder.encode(content, StandardCharsets.UTF_8.name()));
+            argsList.add("-chunjunDistDir");
+            argsList.add(chunjunDistDir);
             // argsList.add("-flinkConfDir");
             // argsList.add("/opt/dtstack/flink-1.12.2/conf/");
             // argsList.add("-confProp");

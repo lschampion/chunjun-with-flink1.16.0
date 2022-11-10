@@ -24,7 +24,7 @@ import com.dtstack.chunjun.connector.oceanbasecdc.source.OceanBaseCdcDynamicTabl
 
 import org.apache.flink.configuration.ConfigOption;
 import org.apache.flink.configuration.ReadableConfig;
-import org.apache.flink.formats.json.JsonOptions;
+import org.apache.flink.formats.json.JsonFormatOptions;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.factories.DynamicTableSourceFactory;
@@ -67,7 +67,7 @@ public class OceanBaseCdcDynamicTableFactory implements DynamicTableSourceFactor
         options.add(OceanBaseCdcOptions.TIMEZONE);
         options.add(OceanBaseCdcOptions.WORKING_MODE);
         options.add(OceanBaseCdcOptions.CAT);
-        options.add(JsonOptions.TIMESTAMP_FORMAT);
+        options.add(JsonFormatOptions.TIMESTAMP_FORMAT);
         return options;
     }
 
@@ -80,6 +80,14 @@ public class OceanBaseCdcDynamicTableFactory implements DynamicTableSourceFactor
                 TableSchemaUtils.getPhysicalSchema(context.getCatalogTable().getSchema());
         final ReadableConfig config = helper.getOptions();
         OceanBaseCdcConf cdcConf = getOceanBaseCdcConf(config);
+        String tfStr = config.get(JsonFormatOptions.TIMESTAMP_FORMAT);
+        TimestampFormat timestampFormat = TimestampFormat.SQL;
+        if (tfStr != null && tfStr.toUpperCase().equals(TimestampFormat.SQL.toString())) {
+            timestampFormat = TimestampFormat.SQL;
+        } else if (tfStr != null
+                && tfStr.toUpperCase().equals(TimestampFormat.ISO_8601.toString())) {
+            timestampFormat = TimestampFormat.ISO_8601;
+        }
         return new OceanBaseCdcDynamicTableSource(
                 physicalSchema, cdcConf, JsonOptions.getTimestampFormat(config));
     }

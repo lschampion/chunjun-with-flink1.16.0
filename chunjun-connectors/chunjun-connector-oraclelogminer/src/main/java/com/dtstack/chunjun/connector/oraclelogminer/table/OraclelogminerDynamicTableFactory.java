@@ -23,7 +23,8 @@ import com.dtstack.chunjun.connector.oraclelogminer.source.OraclelogminerDynamic
 
 import org.apache.flink.configuration.ConfigOption;
 import org.apache.flink.configuration.ReadableConfig;
-import org.apache.flink.formats.json.JsonOptions;
+import org.apache.flink.formats.common.TimestampFormat;
+import org.apache.flink.formats.json.JsonFormatOptions;
 import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.factories.DynamicTableSourceFactory;
@@ -70,7 +71,7 @@ public class OraclelogminerDynamicTableFactory implements DynamicTableSourceFact
         options.add(LogminerOptions.MAX_LOAD_FILE_SIZE);
         options.add(LogminerOptions.TRANSACTION_CACHE_NUM_SIZE);
         options.add(LogminerOptions.TRANSACTION_EXPIRE_TIME);
-        options.add(JsonOptions.TIMESTAMP_FORMAT);
+        options.add(JsonFormatOptions.TIMESTAMP_FORMAT);
         return options;
     }
 
@@ -88,8 +89,15 @@ public class OraclelogminerDynamicTableFactory implements DynamicTableSourceFact
         TableSchema physicalSchema =
                 TableSchemaUtils.getPhysicalSchema(context.getCatalogTable().getSchema());
         LogMinerConf logMinerConf = getLogMinerConf(config);
-        return new OraclelogminerDynamicTableSource(
-                physicalSchema, logMinerConf, JsonOptions.getTimestampFormat(config));
+        String tfStr = config.get(JsonFormatOptions.TIMESTAMP_FORMAT);
+        TimestampFormat timestampFormat = TimestampFormat.SQL;
+        if (tfStr != null && tfStr.toUpperCase().equals(TimestampFormat.SQL.toString())) {
+            timestampFormat = TimestampFormat.SQL;
+        } else if (tfStr != null
+                && tfStr.toUpperCase().equals(TimestampFormat.ISO_8601.toString())) {
+            timestampFormat = TimestampFormat.ISO_8601;
+        }
+        return new OraclelogminerDynamicTableSource(physicalSchema, logMinerConf, timestampFormat);
     }
 
     /**

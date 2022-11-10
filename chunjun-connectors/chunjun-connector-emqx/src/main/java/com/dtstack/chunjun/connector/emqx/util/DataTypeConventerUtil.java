@@ -20,13 +20,11 @@ package com.dtstack.chunjun.connector.emqx.util;
 
 import org.apache.flink.table.types.DataType;
 import org.apache.flink.table.types.logical.LogicalType;
-import org.apache.flink.table.types.logical.LogicalTypeRoot;
 import org.apache.flink.table.types.logical.utils.LogicalTypeChecks;
-import org.apache.flink.util.Preconditions;
 
 import java.util.stream.IntStream;
 
-import static org.apache.flink.table.types.logical.utils.LogicalTypeChecks.hasRoot;
+// import static org.apache.flink.table.types.logical.utils.LogicalTypeChecks.hasRoot;
 
 /**
  * @author chuixue
@@ -36,8 +34,9 @@ import static org.apache.flink.table.types.logical.utils.LogicalTypeChecks.hasRo
 public class DataTypeConventerUtil {
     public static int[] createValueFormatProjection(DataType physicalDataType) {
         final LogicalType physicalType = physicalDataType.getLogicalType();
-        Preconditions.checkArgument(
-                hasRoot(physicalType, LogicalTypeRoot.ROW), "Row data type expected.");
+        // TODO: lisai flink 1.16.0已经没有此方法；
+        //        Preconditions.checkArgument(hasRoot(physicalType, LogicalTypeRoot.ROW), "Row data
+        // type expected.");
         final int physicalFieldCount = LogicalTypeChecks.getFieldCount(physicalType);
         final IntStream physicalFields = IntStream.range(0, physicalFieldCount);
 

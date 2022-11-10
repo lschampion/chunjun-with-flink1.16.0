@@ -25,10 +25,17 @@ import com.dtstack.chunjun.connector.jdbc.conf.ConnectionConf;
 import com.dtstack.chunjun.connector.jdbc.exclusion.FieldNameExclusionStrategy;
 import com.dtstack.chunjun.connector.mysqlcdc.converter.MysqlCdcRawTypeConverter;
 import com.dtstack.chunjun.converter.RawTypeConverter;
+import com.dtstack.chunjun.element.AbstractBaseColumn;
+import com.dtstack.chunjun.element.ColumnRowData;
+import com.dtstack.chunjun.element.column.BigDecimalColumn;
+import com.dtstack.chunjun.element.column.StringColumn;
 import com.dtstack.chunjun.source.SourceFactory;
 import com.dtstack.chunjun.util.GsonUtil;
+import com.dtstack.chunjun.util.TableUtil;
 
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.data.RowData;
@@ -36,20 +43,28 @@ import org.apache.flink.table.types.DataType;
 import org.apache.flink.table.types.logical.RowType;
 import org.apache.flink.types.RowKind;
 
-import com.alibaba.ververica.cdc.connectors.mysql.MySQLSource;
-import com.alibaba.ververica.cdc.debezium.DebeziumDeserializationSchema;
-import com.alibaba.ververica.cdc.debezium.DebeziumSourceFunction;
-import com.alibaba.ververica.cdc.debezium.table.RowDataDebeziumDeserializeSchema;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ververica.cdc.connectors.mysql.source.MySqlSource;
+import com.ververica.cdc.connectors.mysql.source.MySqlSourceBuilder;
+import com.ververica.cdc.connectors.mysql.source.config.MySqlSourceConfigFactory;
+import com.ververica.cdc.connectors.mysql.table.MySqlDeserializationConverterFactory;
+import com.ververica.cdc.connectors.mysql.table.MySqlReadableMetadata;
+import com.ververica.cdc.debezium.DebeziumDeserializationSchema;
+import com.ververica.cdc.debezium.table.MetadataConverter;
+import com.ververica.cdc.debezium.table.RowDataDebeziumDeserializeSchema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlcdcSourceFactory extends SourceFactory {
-
+    public static Logger LOG = LoggerFactory.getLogger(MysqlcdcSourceFactory.class);
     protected CdcConf cdcConf;
+    DebeziumDeserializationSchema<RowData> debeziumDeserializationSchema;
 
     public MysqlcdcSourceFactory(SyncConf syncConf, StreamExecutionEnvironment env) {
         super(syncConf, env);
@@ -71,7 +86,51 @@ public class MysqlcdcSourceFactory extends SourceFactory {
 
     @Override
     public DataStream<RowData> createSource() {
+        buildDeserializeSchema();
+        MySqlSourceBuilder<RowData> builder = MySqlSource.<RowData>builder();
+        builder.serverTimeZone("Asia/Shanghai")
+                .hostname(cdcConf.getHost())
+                .port(cdcConf.getPort())
+                .databaseList(cdcConf.getDatabaseList().toArray(new String[0]))
+                .tableList(
+                        cdcConf.getTableList()
+                                .toArray(new String[cdcConf.getDatabaseList().size()]))
+                .username(cdcConf.getUsername())
+                .password(cdcConf.getPassword())
+                //  .serverId("" + cdcConf.getServerId())
+                //  .deserializer(new
+                // JsonDebeziumDeserializationSchema(false))
+                .deserializer(this.debeziumDeserializationSchema);
 
+        MySqlSource<RowData> mySqlSource = builder.build();
+        MySqlSourceConfigFactory configFactory = mySqlSource.getConfigFactory();
+        LOG.warn("configFactory" + configFactory.toString());
+
+        DataStreamSource<RowData> mysqlCdcSource =
+                env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MysqlCdcSource")
+                        .setParallelism(1);
+        return mysqlCdcSource;
+    }
+
+
+    private void buildDeserializeSchema() {
+        RowType rowType = TableUtil.createRowType(fieldList, getRawTypeConverter());
+        ArrayList<MetadataConverter> metadataConverterArrayList = new ArrayList<>();
+        metadataConverterArrayList.add(MySqlReadableMetadata.DATABASE_NAME.getConverter());
+        metadataConverterArrayList.add(MySqlReadableMetadata.TABLE_NAME.getConverter());
+        metadataConverterArrayList.add(MySqlReadableMetadata.OP_TS.getConverter());
+        MetadataConverter[] metadataConverters =
+                metadataConverterArrayList.toArray(new MetadataConverter[0]);
+        this.debeziumDeserializationSchema =
+                RowDataDebeziumDeserializeSchema.newBuilder()
+                        //                        .setMetadataConverters(metadataConverters)
+                        .setServerTimeZone(ZoneOffset.of("+8"))
+                        .setValueValidator(new DemoValueValidator())
+                        .setUserDefinedConverterFactory(
+                                MySqlDeserializationConverterFactory.instance())
+                        .setResultTypeInfo(getTypeInformation())
+                        .setPhysicalRowType(rowType)
+                        .build();
         List<DataTypes.Field> dataTypes =
                 new ArrayList<>(syncConf.getReader().getFieldList().size());
 
@@ -85,31 +144,26 @@ public class MysqlcdcSourceFactory extends SourceFactory {
                                             getRawTypeConverter().apply(fieldConf.getType())));
                         });
         final DataType dataType = DataTypes.ROW(dataTypes.toArray(new DataTypes.Field[0]));
-
-        DebeziumSourceFunction<RowData> mySqlSource =
-                new MySQLSource.Builder<RowData>()
-                        .hostname(cdcConf.getHost())
-                        .port(cdcConf.getPort())
-                        .databaseList(cdcConf.getDatabaseList().toArray(new String[0]))
-                        .tableList(
-                                cdcConf.getTableList()
-                                        .toArray(new String[cdcConf.getDatabaseList().size()]))
-                        .username(cdcConf.getUsername())
-                        .password(cdcConf.getPassword())
-                        .serverId(cdcConf.getServerId())
-                        .deserializer(buildRowDataDebeziumDeserializeSchema(dataType))
-                        .build();
-
-        return env.addSource(mySqlSource, "MysqlCdcSource", getTypeInformation());
     }
-
-    private DebeziumDeserializationSchema<RowData> buildRowDataDebeziumDeserializeSchema(
-            DataType dataType) {
-        return new RowDataDebeziumDeserializeSchema(
-                (RowType) dataType.getLogicalType(),
-                getTypeInformation(),
-                new DemoValueValidator(),
-                ZoneOffset.UTC);
+    /**
+     * 测试数据生成器
+     *
+     * @return
+     */
+    public ArrayList<RowData> mockSourceList() {
+        ArrayList<RowData> columnRowData = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            ArrayList<AbstractBaseColumn> col =
+                    Lists.newArrayList(
+                            new BigDecimalColumn(i),
+                            new StringColumn("name_" + i),
+                            new StringColumn("男"));
+            ColumnRowData rowData = new ColumnRowData(RowKind.INSERT, 3);
+            rowData.addAllField(col);
+            columnRowData.add(rowData);
+        }
+        //  使用方法： DataStreamSource<RowData> mysqlCdcSource = env.fromCollection(columnRowData);
+        return columnRowData;
     }
 
     protected Class<? extends CdcConf> getConfClass() {

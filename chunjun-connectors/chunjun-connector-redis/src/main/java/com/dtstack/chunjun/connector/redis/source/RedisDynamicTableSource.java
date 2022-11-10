@@ -39,7 +39,6 @@ import org.apache.flink.table.connector.source.abilities.SupportsProjectionPushD
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.table.runtime.typeutils.InternalTypeInfo;
 import org.apache.flink.table.types.logical.RowType;
-import org.apache.flink.table.utils.TableSchemaUtils;
 import org.apache.flink.util.Preconditions;
 
 /**
@@ -102,10 +101,10 @@ public class RedisDynamicTableSource
         return false;
     }
 
-    @Override
-    public void applyProjection(int[][] projectedFields) {
-        this.physicalSchema = TableSchemaUtils.projectSchema(physicalSchema, projectedFields);
-    }
+    //    @Override
+    //    public void applyProjection(int[][] projectedFields) {
+    //        this.physicalSchema = TableSchemaUtils.projectSchema(physicalSchema, projectedFields);
+    //    }
 
     @Override
     public ChangelogMode getChangelogMode() {
