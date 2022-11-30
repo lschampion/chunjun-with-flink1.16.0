@@ -201,7 +201,7 @@ public class PGWalDynamicTableFactory extends JdbcDynamicTableFactory {
                 //                List<FieldConf> columnList = new ArrayList<>(fieldNames.length);
                 //                int index = 0;
                 //                for (String name : fieldNames) {
-                //                    FieldConf field = new FieldConf();
+                //                    FieldConfig field = new FieldConf();
                 //                    field.setName(name);
                 //                    field.setIndex(index++);
                 //                    columnList.add(field);
@@ -210,7 +210,7 @@ public class PGWalDynamicTableFactory extends JdbcDynamicTableFactory {
                 //
                 //                String restoreColumn = jdbcConf.getRestoreColumn();
                 //                if(StringUtils.isNotBlank(restoreColumn)){
-                //                    FieldConf fieldConf =
+                //                    FieldConfig fieldConf =
                 // FieldConf.getSameNameMetaColumn(jdbcConf.getColumn(), restoreColumn);
                 //                    if (fieldConf != null) {
                 //                        jdbcConf.setRestoreColumn(restoreColumn);

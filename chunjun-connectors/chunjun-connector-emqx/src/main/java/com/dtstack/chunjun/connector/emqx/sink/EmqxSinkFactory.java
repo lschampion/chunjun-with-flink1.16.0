@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.emqx.sink;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.emqx.conf.EmqxConf;
 import com.dtstack.chunjun.connector.emqx.converter.EmqxColumnConverter;
 import com.dtstack.chunjun.converter.RawTypeConverter;
@@ -33,7 +33,7 @@ public class EmqxSinkFactory extends SinkFactory {
 
     private final EmqxConf emqxConf;
 
-    public EmqxSinkFactory(SyncConf syncConf) {
+    public EmqxSinkFactory(SyncConfig syncConf) {
         super(syncConf);
         emqxConf =
                 JsonUtil.toObject(

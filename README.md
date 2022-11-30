@@ -77,6 +77,22 @@ Download the 'javac-shaded-9+181-r4173-1.jar' from url 'https://repo1.maven.org/
 mvn install:install-file -DgroupId=com.google.errorprone -DartifactId=javac-shaded -Dversion=9+181-r4173-1 -Dpackaging=jar -Dfile=./jars/javac-shaded-9+181-r4173-1.jar
 ```
 
+
+
+```shell
+# 手动下载包： http://packages.confluent.io/maven/io/confluent/kafka-schema-registry-client/6.2.2/
+mvn install:install-file -DgroupId=io.confluent -DartifactId=kafka-schema-registry-client -Dversion=6.2.2 -Dpackaging=jar -Dfile=./kafka-schema-registry-client-6.2.2.jar
+
+# 百度找
+mvn install:install-file -DgroupId=com.pivotal -DartifactId=greenplum-jdbc -Dversion=5.1.4 -Dpackaging=jar -Dfile=./ext-jars/greenplum-jdbc-5.1.4.jar
+```
+
+
+
+
+
+
+
 ## Quick Start
 
 The following table shows the correspondence between the branches of ChunJun and the version of flink. If the versions are not aligned, problems such as 'Serialization Exceptions', 'NoSuchMethod Exception', etc. mysql occur in tasks.

@@ -295,7 +295,7 @@ public abstract class JdbcDynamicTableFactory
         final Optional<JdbcDialect> dialect = Optional.of(getDialect());
         checkState(dialect.get().canHandle(jdbcUrl), "Cannot handle such jdbc url: " + jdbcUrl);
 
-        checkAllOrNone(config, new ConfigOption[]{USERNAME});
+        checkAllOrNone(config, new ConfigOption[] {USERNAME});
 
         if (config.getOptional(SCAN_POLLING_INTERVAL).isPresent()
                 && config.getOptional(SCAN_POLLING_INTERVAL).get() > 0) {
@@ -304,7 +304,7 @@ public abstract class JdbcDynamicTableFactory
                     "scan.increment.column can not null or empty in polling-interval mode.");
         }
 
-        checkAllOrNone(config, new ConfigOption[]{LOOKUP_CACHE_MAX_ROWS, LOOKUP_CACHE_TTL});
+        checkAllOrNone(config, new ConfigOption[] {LOOKUP_CACHE_MAX_ROWS, LOOKUP_CACHE_TTL});
 
         if (config.get(LOOKUP_MAX_RETRIES) < 0) {
             throw new IllegalArgumentException(

@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.s3.sink;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.s3.conf.S3Conf;
 import com.dtstack.chunjun.connector.s3.converter.S3RowConverter;
 import com.dtstack.chunjun.sink.DtOutputFormatSinkFunction;
@@ -53,7 +53,7 @@ public class S3DynamicTableSink implements DynamicTableSink {
         String[] fieldNames = schema.getFieldNames();
         List<FieldConf> columnList = new ArrayList<>(fieldNames.length);
         for (int i = 0; i < fieldNames.length; i++) {
-            FieldConf field = new FieldConf();
+            FieldConfig field = new FieldConf();
             field.setName(fieldNames[i]);
             field.setType(rowType.getTypeAt(i).asSummaryString());
             field.setIndex(i);

@@ -18,10 +18,10 @@
 
 package com.dtstack.chunjun.connector.mongodb.sink;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.mongodb.conf.MongoClientConf;
 import com.dtstack.chunjun.connector.mongodb.datasync.MongoClientConfFactory;
-import com.dtstack.chunjun.connector.mongodb.datasync.MongodbDataSyncConf;
+import com.dtstack.chunjun.connector.mongodb.datasync.MongodbDataSyncConfig;
 import com.dtstack.chunjun.sink.WriteMode;
 import com.dtstack.chunjun.sink.format.BaseRichOutputFormatBuilder;
 
@@ -35,10 +35,10 @@ import java.util.List;
  * @create 2021/06/24
  */
 public class MongodbOutputFormatBuilder extends BaseRichOutputFormatBuilder<MongodbOutputFormat> {
-    MongodbDataSyncConf mongodbDataSyncConf;
+    MongodbDataSyncConfig mongodbDataSyncConfig;
     String upsertKey;
 
-    public static MongodbOutputFormatBuilder newBuilder(MongodbDataSyncConf mongodbDataSyncConf) {
+    public static MongodbOutputFormatBuilder newBuilder(MongodbDataSyncConfig mongodbDataSyncConf) {
         String upsertKey = mongodbDataSyncConf.getReplaceKey();
         MongoClientConf mongoClientConf =
                 MongoClientConfFactory.createMongoClientConf(mongodbDataSyncConf);
@@ -49,13 +49,13 @@ public class MongodbOutputFormatBuilder extends BaseRichOutputFormatBuilder<Mong
     }
 
     public MongodbOutputFormatBuilder(
-            MongodbDataSyncConf mongodbDataSyncConf,
+            MongodbDataSyncConfig mongodbDataSyncConf,
             MongoClientConf mongoClientConf,
             String key,
             MongodbOutputFormat.WriteMode writeMode) {
         super(new MongodbOutputFormat(mongoClientConf, key, writeMode));
         this.upsertKey = key;
-        this.mongodbDataSyncConf = mongodbDataSyncConf;
+        this.mongodbDataSyncConfig = mongodbDataSyncConfig;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class MongodbOutputFormatBuilder extends BaseRichOutputFormatBuilder<Mong
         if (!StringUtils.isBlank(upsertKey)) {
             List<FieldConf> fields = mongodbDataSyncConf.getColumn();
             boolean flag = false;
-            for (FieldConf field : fields) {
+            for (FieldConfig field : fields) {
                 if (field.getName().equalsIgnoreCase(upsertKey)) {
                     flag = true;
                     break;

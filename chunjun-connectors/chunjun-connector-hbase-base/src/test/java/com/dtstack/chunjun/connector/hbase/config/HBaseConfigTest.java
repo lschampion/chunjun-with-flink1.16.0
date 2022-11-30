@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hbase.config;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -37,11 +37,11 @@ public class HBaseConfigTest {
         List<FieldConf> confList = Lists.newArrayList();
         HBaseConfig conf = new HBaseConfig();
 
-        FieldConf id = new FieldConf();
+        FieldConfig id = new FieldConf();
         id.setName("stu.id");
         id.setType("int");
 
-        FieldConf address = new FieldConf();
+        FieldConfig address = new FieldConf();
         address.setName("msg.address");
         address.setType("string");
 

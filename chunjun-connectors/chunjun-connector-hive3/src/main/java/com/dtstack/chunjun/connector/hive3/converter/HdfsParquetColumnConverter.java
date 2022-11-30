@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.converter;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hive3.conf.HdfsConf;
 import com.dtstack.chunjun.connector.hive3.util.Hive3Util;
 import com.dtstack.chunjun.converter.AbstractRowConverter;
@@ -64,9 +64,9 @@ public class HdfsParquetColumnConverter
     public HdfsParquetColumnConverter(RowType rowType, HdfsConf hdfsConf) {
         super(rowType, hdfsConf);
         this.hdfsConf = hdfsConf;
-        List<FieldConf> fieldConfList = hdfsConf.getColumn();
+        List<FieldConfig> fieldConfList = hdfsConf.getColumn();
         columnNameList =
-                fieldConfList.stream().map(FieldConf::getName).collect(Collectors.toList());
+                fieldConfList.stream().map(FieldConfig::getName).collect(Collectors.toList());
         for (int i = 0; i < rowType.getFieldCount(); i++) {
             toInternalConverters.add(
                     wrapIntoNullableInternalConverter(
@@ -94,7 +94,7 @@ public class HdfsParquetColumnConverter
     public RowData toInternal(RowData input) throws Exception {
         ColumnRowData row = new ColumnRowData(input.getArity());
         if (input instanceof GenericRowData) {
-            List<FieldConf> fieldConfList = commonConf.getColumn();
+            List<FieldConfig> fieldConfList = commonConfig.getColumn();
             GenericRowData genericRowData = (GenericRowData) input;
             for (int i = 0; i < fieldConfList.size(); i++) {
                 row.addField(

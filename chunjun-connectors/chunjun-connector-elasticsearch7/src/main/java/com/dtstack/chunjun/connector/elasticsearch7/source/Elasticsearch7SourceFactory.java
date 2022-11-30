@@ -18,8 +18,8 @@
 
 package com.dtstack.chunjun.connector.elasticsearch7.source;
 
-import com.dtstack.chunjun.config.FieldConf;
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.FieldConfig;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.elasticsearch.ElasticsearchColumnConverter;
 import com.dtstack.chunjun.connector.elasticsearch.ElasticsearchRawTypeMapper;
 import com.dtstack.chunjun.connector.elasticsearch.ElasticsearchRowConverter;
@@ -47,7 +47,7 @@ public class Elasticsearch7SourceFactory extends SourceFactory {
 
     private final ElasticsearchConf elasticsearchConf;
 
-    public Elasticsearch7SourceFactory(SyncConf syncConf, StreamExecutionEnvironment env) {
+    public Elasticsearch7SourceFactory(SyncConfig syncConf, StreamExecutionEnvironment env) {
         super(syncConf, env);
         elasticsearchConf =
                 JsonUtil.toObject(

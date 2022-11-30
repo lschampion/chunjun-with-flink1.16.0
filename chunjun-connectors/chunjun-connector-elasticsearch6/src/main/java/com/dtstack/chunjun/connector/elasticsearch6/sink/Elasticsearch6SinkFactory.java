@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.elasticsearch6.sink;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.elasticsearch.ElasticsearchColumnConverter;
 import com.dtstack.chunjun.connector.elasticsearch.ElasticsearchRawTypeMapper;
 import com.dtstack.chunjun.connector.elasticsearch6.Elasticsearch6Config;
@@ -42,7 +42,7 @@ public class Elasticsearch6SinkFactory extends SinkFactory {
 
     private final Elasticsearch6Config elasticsearchConf;
 
-    public Elasticsearch6SinkFactory(SyncConf syncConf) {
+    public Elasticsearch6SinkFactory(SyncConfig syncConf) {
         super(syncConf);
         elasticsearchConf =
                 JsonUtil.toObject(

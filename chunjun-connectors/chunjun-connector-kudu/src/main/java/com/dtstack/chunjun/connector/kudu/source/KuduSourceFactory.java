@@ -18,8 +18,8 @@
 
 package com.dtstack.chunjun.connector.kudu.source;
 
-import com.dtstack.chunjun.config.FieldConf;
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.FieldConfig;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.kudu.conf.KuduSourceConf;
 import com.dtstack.chunjun.connector.kudu.converter.KuduColumnConverter;
 import com.dtstack.chunjun.connector.kudu.converter.KuduRawTypeConverter;
@@ -44,7 +44,7 @@ public class KuduSourceFactory extends SourceFactory {
 
     private final KuduSourceConf sourceConf;
 
-    public KuduSourceFactory(SyncConf syncConf, StreamExecutionEnvironment env) {
+    public KuduSourceFactory(SyncConfig syncConf, StreamExecutionEnvironment env) {
         super(syncConf, env);
 
         sourceConf =

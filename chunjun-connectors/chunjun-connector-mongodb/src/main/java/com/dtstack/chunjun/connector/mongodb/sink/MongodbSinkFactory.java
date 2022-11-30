@@ -18,10 +18,10 @@
 
 package com.dtstack.chunjun.connector.mongodb.sink;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.mongodb.converter.MongodbRawTypeConverter;
 import com.dtstack.chunjun.connector.mongodb.datasync.MongoConverterFactory;
-import com.dtstack.chunjun.connector.mongodb.datasync.MongodbDataSyncConf;
+import com.dtstack.chunjun.connector.mongodb.datasync.MongodbDataSyncConfig;
 import com.dtstack.chunjun.converter.AbstractRowConverter;
 import com.dtstack.chunjun.converter.RawTypeConverter;
 import com.dtstack.chunjun.sink.SinkFactory;
@@ -41,13 +41,13 @@ import com.google.gson.GsonBuilder;
  */
 public class MongodbSinkFactory extends SinkFactory {
 
-    private final MongodbDataSyncConf mongodbDataSyncConf;
+    private final MongodbDataSyncConfig mongodbDataSyncConfig;
 
-    public MongodbSinkFactory(SyncConf syncConf) {
+    public MongodbSinkFactory(SyncConfig syncConf) {
         super(syncConf);
         Gson gson = new GsonBuilder().create();
         GsonUtil.setTypeAdapter(gson);
-        mongodbDataSyncConf =
+        mongodbDataSyncConfig =
                 gson.fromJson(
                         gson.toJson(syncConf.getWriter().getParameter()),
                         MongodbDataSyncConf.class);

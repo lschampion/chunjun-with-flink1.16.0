@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.redis.sink;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.redis.adapter.RedisDataModeAdapter;
 import com.dtstack.chunjun.connector.redis.adapter.RedisDataTypeAdapter;
 import com.dtstack.chunjun.connector.redis.conf.RedisConf;
@@ -45,7 +45,7 @@ public class RedisSinkFactory extends SinkFactory {
 
     private final RedisConf redisConf;
 
-    public RedisSinkFactory(SyncConf syncConf) {
+    public RedisSinkFactory(SyncConfig syncConf) {
         super(syncConf);
         Gson gson =
                 new GsonBuilder()

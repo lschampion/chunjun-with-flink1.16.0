@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.emqx.source;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.emqx.conf.EmqxConf;
 import com.dtstack.chunjun.connector.emqx.converter.EmqxColumnConverter;
 import com.dtstack.chunjun.converter.RawTypeConverter;
@@ -38,7 +38,7 @@ public class EmqxSourceFactory extends SourceFactory {
 
     private final EmqxConf emqxConf;
 
-    public EmqxSourceFactory(SyncConf syncConf, StreamExecutionEnvironment env) {
+    public EmqxSourceFactory(SyncConfig syncConf, StreamExecutionEnvironment env) {
         super(syncConf, env);
         emqxConf =
                 JsonUtil.toObject(

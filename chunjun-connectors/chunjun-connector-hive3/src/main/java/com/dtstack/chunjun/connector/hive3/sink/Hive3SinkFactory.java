@@ -18,8 +18,8 @@
 
 package com.dtstack.chunjun.connector.hive3.sink;
 
-import com.dtstack.chunjun.config.FieldConf;
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.FieldConfig;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.hive3.conf.HdfsConf;
 import com.dtstack.chunjun.connector.hive3.converter.HdfsRawTypeConverter;
 import com.dtstack.chunjun.connector.hive3.util.Hive3Util;
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 public class Hive3SinkFactory extends SinkFactory {
     private final HdfsConf hdfsConf;
 
-    public Hive3SinkFactory(SyncConf syncConf) {
+    public Hive3SinkFactory(SyncConfig syncConf) {
         super(syncConf);
         hdfsConf =
                 GsonUtil.GSON.fromJson(
@@ -84,19 +84,19 @@ public class Hive3SinkFactory extends SinkFactory {
         if (CollectionUtils.isEmpty(fullColumnNameList)) {
             fullColumnNameList =
                     hdfsConf.getColumn().stream()
-                            .map(FieldConf::getName)
+                            .map(FieldConfig::getName)
                             .collect(Collectors.toList());
         }
         if (CollectionUtils.isEmpty(fullColumnTypeList)) {
             fullColumnTypeList = new ArrayList<>(fullColumnNameList.size());
         }
         int[] fullColumnIndexes = new int[fullColumnNameList.size()];
-        List<FieldConf> fieldConfList = hdfsConf.getColumn();
+        List<FieldConfig> fieldConfList = hdfsConf.getColumn();
         for (int i = 0; i < fullColumnNameList.size(); i++) {
             String columnName = fullColumnNameList.get(i);
             int j = 0;
             for (; j < fieldConfList.size(); j++) {
-                FieldConf fieldConf = fieldConfList.get(j);
+                FieldConfig fieldConf = fieldConfList.get(j);
                 if (columnName.equalsIgnoreCase(fieldConf.getName())) {
                     fullColumnTypeList.add(fieldConf.getType());
                     break;

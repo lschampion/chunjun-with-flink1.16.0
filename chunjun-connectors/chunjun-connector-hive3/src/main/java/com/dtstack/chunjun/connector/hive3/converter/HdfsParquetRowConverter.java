@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.converter;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hive3.conf.HdfsConf;
 import com.dtstack.chunjun.connector.hive3.util.Hive3Util;
 import com.dtstack.chunjun.converter.AbstractRowConverter;
@@ -62,9 +62,9 @@ public class HdfsParquetRowConverter
     public HdfsParquetRowConverter(RowType rowType, HdfsConf hdfsConf) {
         super(rowType, hdfsConf);
         this.hdfsConf = hdfsConf;
-        List<FieldConf> fieldConfList = hdfsConf.getColumn();
+        List<FieldConfig> fieldConfList = hdfsConf.getColumn();
         columnNameList =
-                fieldConfList.stream().map(FieldConf::getName).collect(Collectors.toList());
+                fieldConfList.stream().map(FieldConfig::getName).collect(Collectors.toList());
         for (int i = 0; i < rowType.getFieldCount(); i++) {
             toInternalConverters.add(
                     wrapIntoNullableInternalConverter(

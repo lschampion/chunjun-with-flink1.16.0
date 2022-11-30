@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.source;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hive3.inputSplit.HdfsParquetInputSplit;
 import com.dtstack.chunjun.connector.hive3.util.Hive3Util;
 import com.dtstack.chunjun.constants.ConstantValue;
@@ -115,7 +115,7 @@ public class HdfsParquetInputFormat extends BaseHdfsInputFormat {
 
     @Override
     protected RowData nextRecordInternal(RowData rowData) throws ReadRecordException {
-        List<FieldConf> fieldConfList = hdfsConf.getColumn();
+        List<FieldConfig> fieldConfList = hdfsConf.getColumn();
         GenericRowData genericRowData;
         if (fieldConfList.size() == 1
                 && ConstantValue.STAR_SYMBOL.equals(fieldConfList.get(0).getName())) {
@@ -128,7 +128,7 @@ public class HdfsParquetInputFormat extends BaseHdfsInputFormat {
             genericRowData =
                     new GenericRowData(Math.max(fieldConfList.size(), fullColNames.size()));
             for (int i = 0; i < fieldConfList.size(); i++) {
-                FieldConf fieldConf = fieldConfList.get(i);
+                FieldConfig fieldConf = fieldConfList.get(i);
                 Object obj = null;
                 if (fieldConf.getValue() != null) {
                     obj = fieldConf.getValue();
@@ -340,7 +340,7 @@ public class HdfsParquetInputFormat extends BaseHdfsInputFormat {
                         getTypeName(type.asPrimitiveType().getPrimitiveTypeName().getMethod));
             }
 
-            for (FieldConf fieldConf : hdfsConf.getColumn()) {
+            for (FieldConfig fieldConf : hdfsConf.getColumn()) {
                 String name = fieldConf.getName();
                 if (StringUtils.isNotBlank(name)) {
                     name = name.toUpperCase();

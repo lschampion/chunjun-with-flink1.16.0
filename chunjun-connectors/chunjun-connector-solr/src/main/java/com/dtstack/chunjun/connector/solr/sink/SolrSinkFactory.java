@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.solr.sink;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.solr.SolrConf;
 import com.dtstack.chunjun.connector.solr.SolrConverterFactory;
 import com.dtstack.chunjun.connector.solr.converter.SolrRawTypeConverter;
@@ -43,7 +43,7 @@ public class SolrSinkFactory extends SinkFactory {
 
     private final SolrConf solrConf;
 
-    public SolrSinkFactory(SyncConf syncConf) {
+    public SolrSinkFactory(SyncConfig syncConf) {
         super(syncConf);
         Gson gson = new GsonBuilder().create();
         GsonUtil.setTypeAdapter(gson);

@@ -18,10 +18,10 @@
 
 package com.dtstack.chunjun.connector.mysqlcdc.source;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.jdbc.adapter.ConnectionAdapter;
-import com.dtstack.chunjun.connector.jdbc.config.CdcConf;
-import com.dtstack.chunjun.connector.jdbc.config.ConnectionConf;
+import com.dtstack.chunjun.connector.jdbc.config.CdcJdbcConf;
+import com.dtstack.chunjun.connector.jdbc.config.ConnectionConfig;
 import com.dtstack.chunjun.connector.jdbc.exclusion.FieldNameExclusionStrategy;
 import com.dtstack.chunjun.connector.mysqlcdc.converter.MysqlCdcRawTypeConverter;
 import com.dtstack.chunjun.converter.RawTypeConverter;
@@ -49,14 +49,15 @@ import java.util.List;
 
 public class MysqlcdcSourceFactory extends SourceFactory {
 
-    protected CdcConf cdcConf;
+    protected CdcJdbcConf cdcConf;
 
-    public MysqlcdcSourceFactory(SyncConf syncConf, StreamExecutionEnvironment env) {
+    public MysqlcdcSourceFactory(SyncConfig syncConf, StreamExecutionEnvironment env) {
         super(syncConf, env);
         Gson gson =
                 new GsonBuilder()
                         .registerTypeAdapter(
-                                ConnectionConf.class, new ConnectionAdapter("SourceConnectionConf"))
+                                ConnectionConfig.class,
+                                new ConnectionAdapter("SourceConnectionConf"))
                         .addDeserializationExclusionStrategy(
                                 new FieldNameExclusionStrategy("column"))
                         .create();
@@ -73,9 +74,10 @@ public class MysqlcdcSourceFactory extends SourceFactory {
     public DataStream<RowData> createSource() {
 
         List<DataTypes.Field> dataTypes =
-                new ArrayList<>(syncConf.getReader().getFieldList().size());
+                new ArrayList<>(syncConfig.getReader().getFieldList().size());
 
-        syncConf.getReader()
+        syncConfig
+                .getReader()
                 .getFieldList()
                 .forEach(
                         fieldConf -> {
@@ -90,10 +92,8 @@ public class MysqlcdcSourceFactory extends SourceFactory {
                 new MySQLSource.Builder<RowData>()
                         .hostname(cdcConf.getHost())
                         .port(cdcConf.getPort())
-                        .databaseList(cdcConf.getDatabaseList().toArray(new String[0]))
-                        .tableList(
-                                cdcConf.getTableList()
-                                        .toArray(new String[cdcConf.getDatabaseList().size()]))
+                        .databaseList(cdcConf.getDatabase())
+                        .tableList(cdcConf.getTableList().toArray(new String[0]))
                         .username(cdcConf.getUsername())
                         .password(cdcConf.getPassword())
                         .serverId(cdcConf.getServerId())
@@ -112,8 +112,8 @@ public class MysqlcdcSourceFactory extends SourceFactory {
                 ZoneOffset.UTC);
     }
 
-    protected Class<? extends CdcConf> getConfClass() {
-        return CdcConf.class;
+    protected Class<? extends CdcJdbcConf> getConfClass() {
+        return CdcJdbcConf.class;
     }
 
     public static final class DemoValueValidator

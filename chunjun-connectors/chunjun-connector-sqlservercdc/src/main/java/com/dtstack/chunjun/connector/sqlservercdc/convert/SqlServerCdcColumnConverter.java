@@ -63,7 +63,6 @@ import static com.dtstack.chunjun.constants.CDCConstantValue.TABLE;
 import static com.dtstack.chunjun.constants.CDCConstantValue.TS;
 import static com.dtstack.chunjun.constants.CDCConstantValue.TYPE;
 
-
 public class SqlServerCdcColumnConverter
         extends AbstractCDCRowConverter<SqlServerCdcEventRow, String> {
 

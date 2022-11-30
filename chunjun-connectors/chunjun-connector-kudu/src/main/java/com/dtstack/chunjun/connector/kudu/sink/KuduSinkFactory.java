@@ -18,8 +18,8 @@
 
 package com.dtstack.chunjun.connector.kudu.sink;
 
-import com.dtstack.chunjun.config.FieldConf;
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.FieldConfig;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.kudu.conf.KuduSinkConf;
 import com.dtstack.chunjun.connector.kudu.converter.KuduColumnConverter;
 import com.dtstack.chunjun.connector.kudu.converter.KuduRawTypeConverter;
@@ -44,7 +44,7 @@ public class KuduSinkFactory extends SinkFactory {
 
     private final KuduSinkConf sinkConf;
 
-    public KuduSinkFactory(SyncConf syncConf) {
+    public KuduSinkFactory(SyncConfig syncConf) {
         super(syncConf);
 
         sinkConf =

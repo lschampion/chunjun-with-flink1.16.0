@@ -20,7 +20,7 @@ package com.dtstack.chunjun.connector.s3.source;
 
 import com.dtstack.chunjun.config.RestoreConf;
 import com.dtstack.chunjun.config.SpeedConf;
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.s3.conf.S3Conf;
 import com.dtstack.chunjun.connector.s3.converter.S3ColumnConverter;
 import com.dtstack.chunjun.connector.s3.converter.S3RawConverter;
@@ -46,7 +46,7 @@ public class S3SourceFactory extends SourceFactory {
     private final RestoreConf restoreConf;
     private final SpeedConf speedConf;
 
-    public S3SourceFactory(SyncConf config, StreamExecutionEnvironment env) {
+    public S3SourceFactory(SyncConfig config, StreamExecutionEnvironment env) {
         super(config, env);
         s3Conf =
                 GsonUtil.GSON.fromJson(

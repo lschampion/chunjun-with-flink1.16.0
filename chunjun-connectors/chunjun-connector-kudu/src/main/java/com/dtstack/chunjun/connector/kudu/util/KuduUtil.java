@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.kudu.util;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.kudu.conf.KuduCommonConf;
 import com.dtstack.chunjun.connector.kudu.conf.KuduSourceConf;
 import com.dtstack.chunjun.constants.ConstantValue;

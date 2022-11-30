@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.sqlservercdc.source;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.sqlservercdc.conf.SqlServerCdcConf;
 import com.dtstack.chunjun.connector.sqlservercdc.convert.SqlServerCdcColumnConverter;
 import com.dtstack.chunjun.connector.sqlservercdc.convert.SqlServerCdcRawTypeConverter;
@@ -30,7 +30,7 @@ import com.dtstack.chunjun.source.SourceFactory;
 import com.dtstack.chunjun.util.JsonUtil;
 import com.dtstack.chunjun.util.TableUtil;
 
-import org.apache.flink.formats.json.TimestampFormat;
+import org.apache.flink.formats.common.TimestampFormat;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.data.RowData;
@@ -41,7 +41,7 @@ public class SqlservercdcSourceFactory extends SourceFactory {
 
     private final SqlServerCdcConf sqlServerCdcConf;
 
-    public SqlservercdcSourceFactory(SyncConf config, StreamExecutionEnvironment env) {
+    public SqlservercdcSourceFactory(SyncConfig config, StreamExecutionEnvironment env) {
         super(config, env);
         sqlServerCdcConf =
                 JsonUtil.toObject(

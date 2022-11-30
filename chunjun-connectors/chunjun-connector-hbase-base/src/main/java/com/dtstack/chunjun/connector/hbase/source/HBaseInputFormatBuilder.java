@@ -17,7 +17,7 @@
  */
 package com.dtstack.chunjun.connector.hbase.source;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hbase.config.HBaseConfigConstants;
 import com.dtstack.chunjun.connector.hbase.util.ScanBuilder;
 import com.dtstack.chunjun.source.format.BaseRichInputFormatBuilder;

@@ -20,7 +20,7 @@ package com.dtstack.chunjun.connector.mongodb.source;
 
 import com.dtstack.chunjun.connector.mongodb.conf.MongoClientConf;
 import com.dtstack.chunjun.connector.mongodb.datasync.MongoClientConfFactory;
-import com.dtstack.chunjun.connector.mongodb.datasync.MongodbDataSyncConf;
+import com.dtstack.chunjun.connector.mongodb.datasync.MongodbDataSyncConfig;
 import com.dtstack.chunjun.source.format.BaseRichInputFormatBuilder;
 
 import com.mongodb.BasicDBObject;
@@ -34,7 +34,7 @@ import org.bson.conversions.Bson;
  */
 public class MongodbInputFormatBuilder extends BaseRichInputFormatBuilder<MongodbInputFormat> {
 
-    public static MongodbInputFormatBuilder newBuild(MongodbDataSyncConf mongodbDataSyncConf) {
+    public static MongodbInputFormatBuilder newBuild(MongodbDataSyncConfig mongodbDataSyncConf) {
         MongoClientConf clientConf =
                 MongoClientConfFactory.createMongoClientConf(mongodbDataSyncConf);
         Bson filter = parseFilter(mongodbDataSyncConf.getFilter());

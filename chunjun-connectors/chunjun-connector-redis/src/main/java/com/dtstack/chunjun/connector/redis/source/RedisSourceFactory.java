@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.redis.source;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.redis.adapter.RedisDataModeAdapter;
 import com.dtstack.chunjun.connector.redis.adapter.RedisDataTypeAdapter;
 import com.dtstack.chunjun.connector.redis.conf.RedisConf;
@@ -41,7 +41,7 @@ import com.google.gson.GsonBuilder;
 public class RedisSourceFactory extends SourceFactory {
     private RedisConf redisConf;
 
-    public RedisSourceFactory(SyncConf syncConf, StreamExecutionEnvironment env) {
+    public RedisSourceFactory(SyncConfig syncConf, StreamExecutionEnvironment env) {
         super(syncConf, env);
         Gson gson =
                 new GsonBuilder()

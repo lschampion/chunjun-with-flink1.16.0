@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.source;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hive3.inputSplit.HdfsTextInputSplit;
 import com.dtstack.chunjun.connector.hive3.util.Hive3Util;
 import com.dtstack.chunjun.constants.ConstantValue;
@@ -111,7 +111,7 @@ public class HdfsTextInputFormat extends BaseHdfsInputFormat {
     @Override
     protected RowData nextRecordInternal(RowData rowData) throws ReadRecordException {
         try {
-            List<FieldConf> fieldConfList = hdfsConf.getColumn();
+            List<FieldConfig> fieldConfList = hdfsConf.getColumn();
             String line =
                     new String(
                             ((Text) value).getBytes(),
@@ -129,7 +129,7 @@ public class HdfsTextInputFormat extends BaseHdfsInputFormat {
                 }
             } else {
                 for (int i = 0; i < fieldConfList.size(); i++) {
-                    FieldConf fieldConf = fieldConfList.get(i);
+                    FieldConfig fieldConf = fieldConfList.get(i);
 
                     Object value = null;
                     if (fieldConf.getValue() != null) {

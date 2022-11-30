@@ -51,9 +51,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * OutputFormat for writing data to relational database.
- */
+/** OutputFormat for writing data to relational database. */
 public class JdbcOutputFormat extends BaseRichOutputFormat {
 
     protected static final Logger LOG = LoggerFactory.getLogger(JdbcOutputFormat.class);

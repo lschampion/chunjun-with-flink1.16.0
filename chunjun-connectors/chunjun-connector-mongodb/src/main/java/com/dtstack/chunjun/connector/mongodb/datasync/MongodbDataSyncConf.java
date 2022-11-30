@@ -31,7 +31,7 @@ import java.util.List;
  * @program chunjun
  * @create 2021/06/21
  */
-public class MongodbDataSyncConf extends CommonConfig implements Serializable {
+public class MongodbDataSyncConfig extends CommonConfig implements Serializable {
 
     private String hostPorts;
 

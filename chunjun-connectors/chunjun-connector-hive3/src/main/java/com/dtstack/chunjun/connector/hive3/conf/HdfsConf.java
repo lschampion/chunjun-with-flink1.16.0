@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.conf;
 
-import com.dtstack.chunjun.config.BaseFileConf;
+import com.dtstack.chunjun.config.BaseFileConfig;
 
 import org.apache.parquet.hadoop.ParquetWriter;
 
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /** @author liuliu 2022/3/23 */
-public class HdfsConf extends BaseFileConf {
+public class HdfsConf extends BaseFileConfig {
     private String defaultFS;
     private String fileType;
     /** hadoop高可用相关配置 * */

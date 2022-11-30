@@ -19,7 +19,7 @@
 package com.dtstack.chunjun.connector.mongodb.converter;
 
 import com.dtstack.chunjun.config.CommonConfig;
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.converter.AbstractRowConverter;
 import com.dtstack.chunjun.element.AbstractBaseColumn;
 import com.dtstack.chunjun.element.ColumnRowData;
@@ -100,7 +100,7 @@ public class MongodbColumnConverter
         List<FieldConf> fieldList = commonConf.getColumn();
         ColumnRowData result = new ColumnRowData(fieldList.size());
         int convertIndex = 0;
-        for (FieldConf fieldConf : fieldList) {
+        for (FieldConfig fieldConf : fieldList) {
             AbstractBaseColumn baseColumn = null;
             if (StringUtils.isNullOrWhitespaceOnly(fieldConf.getValue())) {
                 Object field = document.get(fieldConf.getName());

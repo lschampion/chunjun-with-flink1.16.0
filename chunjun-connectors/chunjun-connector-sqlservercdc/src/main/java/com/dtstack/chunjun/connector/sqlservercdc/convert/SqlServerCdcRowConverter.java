@@ -23,7 +23,7 @@ import com.dtstack.chunjun.converter.AbstractCDCRowConverter;
 import com.dtstack.chunjun.converter.IDeserializationConverter;
 
 import org.apache.flink.calcite.shaded.com.google.common.collect.Maps;
-import org.apache.flink.formats.json.TimestampFormat;
+import org.apache.flink.formats.common.TimestampFormat;
 import org.apache.flink.table.api.TableException;
 import org.apache.flink.table.data.DecimalData;
 import org.apache.flink.table.data.RowData;
@@ -50,7 +50,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 
 public class SqlServerCdcRowConverter
         extends AbstractCDCRowConverter<SqlServerCdcEventRow, LogicalType> {

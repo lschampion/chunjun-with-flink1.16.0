@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.redis.converter;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.redis.conf.RedisConf;
 import com.dtstack.chunjun.connector.redis.enums.RedisDataMode;
 import com.dtstack.chunjun.connector.redis.enums.RedisDataType;
@@ -181,7 +181,7 @@ public class RedisColumnConverter extends AbstractRowConverter<Object, Object, J
         Map<String, Object> fieldMap = new HashMap<>();
         int index = 0;
 
-        for (FieldConf fieldConf : columns) {
+        for (FieldConfig fieldConf : columns) {
             if (Objects.nonNull(row.getField(index))) {
                 fieldMap.put(fieldConf.getName(), row.getField(index).getData());
             }
@@ -217,7 +217,7 @@ public class RedisColumnConverter extends AbstractRowConverter<Object, Object, J
     private void hashWrite(ColumnRowData row, String key, Jedis jedis) {
         if (CollectionUtils.isNotEmpty(redisConf.getColumn())) {
             for (int index : fieldIndex) {
-                FieldConf fieldConf = redisConf.getColumn().get(index);
+                FieldConfig fieldConf = redisConf.getColumn().get(index);
                 String field = fieldConf.getName();
                 if (row.getField(index) != null) {
                     jedis.hset(key, field, row.getField(index).asString());

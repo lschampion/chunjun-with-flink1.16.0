@@ -18,8 +18,8 @@
 
 package com.dtstack.chunjun.connector.http.source;
 
-import com.dtstack.chunjun.config.FieldConf;
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.FieldConfig;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.http.common.ConstantValue;
 import com.dtstack.chunjun.connector.http.common.HttpMethod;
 import com.dtstack.chunjun.connector.http.common.HttpRestConfig;
@@ -52,7 +52,7 @@ public class HttpSourceFactory extends SourceFactory {
 
     private final HttpRestConfig httpRestConfig;
 
-    public HttpSourceFactory(SyncConf config, StreamExecutionEnvironment env) {
+    public HttpSourceFactory(SyncConfig config, StreamExecutionEnvironment env) {
         super(config, env);
         httpRestConfig =
                 JsonUtil.toObject(
@@ -102,7 +102,7 @@ public class HttpSourceFactory extends SourceFactory {
         List<FieldConf> columnsNoDelimiter = new ArrayList();
         fields.forEach(
                 fieldConf -> {
-                    FieldConf newField = new FieldConf();
+                    FieldConfig newField = new FieldConf();
                     String[] split =
                             fieldConf
                                     .getName()

@@ -34,9 +34,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * this class is copied from (https://github.com/debezium/debezium).
- */
+/** this class is copied from (https://github.com/debezium/debezium). */
 public class ChangeTablePointer {
     private static final Logger LOG = LoggerFactory.getLogger(ChangeTablePointer.class);
 

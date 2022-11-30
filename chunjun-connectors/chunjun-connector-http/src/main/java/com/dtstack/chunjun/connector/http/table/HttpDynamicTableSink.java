@@ -17,7 +17,7 @@
  */
 package com.dtstack.chunjun.connector.http.table;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.http.common.HttpWriterConfig;
 import com.dtstack.chunjun.connector.http.converter.HttpRowConverter;
 import com.dtstack.chunjun.connector.http.outputformat.HttpOutputFormatBuilder;
@@ -67,7 +67,7 @@ public class HttpDynamicTableSink implements DynamicTableSink {
                 Arrays.stream(schema.getFieldNames())
                         .map(
                                 e -> {
-                                    FieldConf fieldConf = new FieldConf();
+                                    FieldConfig fieldConf = new FieldConf();
                                     fieldConf.setName(e);
                                     return fieldConf;
                                 })

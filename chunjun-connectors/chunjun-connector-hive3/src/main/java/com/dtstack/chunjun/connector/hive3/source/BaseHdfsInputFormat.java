@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.source;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hive3.conf.HdfsConf;
 import com.dtstack.chunjun.connector.hive3.util.Hive3Util;
 import com.dtstack.chunjun.source.format.BaseRichInputFormat;
@@ -139,7 +139,7 @@ public abstract class BaseHdfsInputFormat extends BaseRichInputFormat {
             }
         }
         // 从 map 里面找出对应分区字段，然后给该列设置值。
-        for (FieldConf fieldConf : hdfsConf.getColumn()) {
+        for (FieldConfig fieldConf : hdfsConf.getColumn()) {
             // 如果此列是分区字段
             if (fieldConf.getPart()) {
                 fieldConf.setValue(partitionAndValueMap.get(fieldConf.getName()));

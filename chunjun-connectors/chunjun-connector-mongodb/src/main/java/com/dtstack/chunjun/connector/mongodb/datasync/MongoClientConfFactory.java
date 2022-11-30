@@ -39,7 +39,7 @@ public class MongoClientConfFactory {
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("(?<host>.*):(?<port>\\d+)*");
     private static final Integer DEFAULT_PORT = 27017;
 
-    public static MongoClientConf createMongoClientConf(MongodbDataSyncConf mongodbDataSyncConf) {
+    public static MongoClientConf createMongoClientConf(MongodbDataSyncConfig mongodbDataSyncConf) {
         MongoClientConf mongoClientConf = new MongoClientConf();
         mongoClientConf.setUri(mongodbDataSyncConf.getUrl());
         mongoClientConf.setUsername(mongodbDataSyncConf.getUsername());

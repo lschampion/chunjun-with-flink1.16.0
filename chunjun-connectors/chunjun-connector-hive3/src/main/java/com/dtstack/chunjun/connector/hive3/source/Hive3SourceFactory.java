@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.source;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.hive3.conf.HdfsConf;
 import com.dtstack.chunjun.connector.hive3.converter.HdfsRawTypeConverter;
 import com.dtstack.chunjun.connector.hive3.util.Hive3Util;
@@ -35,7 +35,7 @@ import org.apache.flink.table.data.RowData;
 public class Hive3SourceFactory extends SourceFactory {
     HdfsConf hdfsConf;
 
-    public Hive3SourceFactory(SyncConf syncConf, StreamExecutionEnvironment env) {
+    public Hive3SourceFactory(SyncConfig syncConf, StreamExecutionEnvironment env) {
         super(syncConf, env);
         hdfsConf =
                 GsonUtil.GSON.fromJson(

@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.solr;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.solr.converter.SolrColumnConverter;
 import com.dtstack.chunjun.connector.solr.converter.SolrRawTypeConverter;
 import com.dtstack.chunjun.connector.solr.converter.SolrRowConverter;
@@ -44,7 +44,7 @@ public class SolrConverterFactory {
         fieldNames = new ArrayList<>();
         fieldTypes = new ArrayList<>();
         List<FieldConf> fields = solrConf.getColumn();
-        for (FieldConf field : fields) {
+        for (FieldConfig field : fields) {
             fieldNames.add(field.getName());
             fieldTypes.add(field.getType());
         }

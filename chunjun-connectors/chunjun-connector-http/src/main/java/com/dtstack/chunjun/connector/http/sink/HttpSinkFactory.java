@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.http.sink;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.http.common.HttpWriterConfig;
 import com.dtstack.chunjun.connector.http.outputformat.HttpOutputFormatBuilder;
 import com.dtstack.chunjun.converter.RawTypeConverter;
@@ -43,7 +43,7 @@ public class HttpSinkFactory extends SinkFactory {
         return null;
     }
 
-    public HttpSinkFactory(SyncConf syncConf) {
+    public HttpSinkFactory(SyncConfig syncConf) {
         super(syncConf);
         httpWriterConfig =
                 JsonUtil.toObject(

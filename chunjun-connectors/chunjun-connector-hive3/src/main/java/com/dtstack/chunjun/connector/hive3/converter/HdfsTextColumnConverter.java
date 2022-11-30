@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.converter;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hive3.conf.HdfsConf;
 import com.dtstack.chunjun.converter.AbstractRowConverter;
 import com.dtstack.chunjun.converter.IDeserializationConverter;
@@ -72,7 +72,7 @@ public class HdfsTextColumnConverter
     public RowData toInternal(RowData input) throws Exception {
         ColumnRowData row = new ColumnRowData(input.getArity());
         if (input instanceof GenericRowData) {
-            List<FieldConf> fieldConfList = commonConf.getColumn();
+            List<FieldConfig> fieldConfList = commonConfig.getColumn();
             GenericRowData genericRowData = (GenericRowData) input;
             for (int i = 0; i < fieldConfList.size(); i++) {
                 row.addField(

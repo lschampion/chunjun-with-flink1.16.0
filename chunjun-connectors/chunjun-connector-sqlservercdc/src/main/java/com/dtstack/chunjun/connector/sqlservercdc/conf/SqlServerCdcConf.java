@@ -19,10 +19,9 @@
 package com.dtstack.chunjun.connector.sqlservercdc.conf;
 
 import com.dtstack.chunjun.config.CommonConfig;
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 
 import java.util.List;
-
 
 public class SqlServerCdcConf extends CommonConfig {
 
@@ -37,7 +36,7 @@ public class SqlServerCdcConf extends CommonConfig {
     private String lsn;
     private boolean splitUpdate;
     private String timestampFormat = "sql";
-    private List<FieldConf> column;
+    private List<FieldConfig> column;
     private boolean autoCommit = false;
     private boolean autoResetConnection = false;
 
@@ -146,12 +145,12 @@ public class SqlServerCdcConf extends CommonConfig {
     }
 
     @Override
-    public List<FieldConf> getColumn() {
+    public List<FieldConfig> getColumn() {
         return column;
     }
 
     @Override
-    public void setColumn(List<FieldConf> column) {
+    public void setColumn(List<FieldConfig> column) {
         this.column = column;
     }
 

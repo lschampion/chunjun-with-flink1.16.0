@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hbase.util;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hbase.HBaseTableSchema;
 
 import org.apache.flink.table.types.DataType;
@@ -62,7 +62,7 @@ public class ScanBuilder implements Serializable {
         Scan scan = new Scan();
         if (isSync) {
             assert fieldConfList != null;
-            for (FieldConf fieldConf : fieldConfList) {
+            for (FieldConfig fieldConf : fieldConfList) {
                 String fieldName = fieldConf.getName();
                 if (!"rowkey".equalsIgnoreCase(fieldName)) {
                     if (fieldName.contains(".")) {

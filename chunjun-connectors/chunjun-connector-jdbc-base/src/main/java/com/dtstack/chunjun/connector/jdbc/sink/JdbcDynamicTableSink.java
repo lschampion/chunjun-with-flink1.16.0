@@ -80,7 +80,8 @@ public class JdbcDynamicTableSink implements DynamicTableSink {
     @Override
     public SinkFunctionProvider getSinkRuntimeProvider(Context context) {
         // 通过该参数得到类型转换器，将数据库中的字段转成对应的类型
-        final InternalTypeInfo<?> typeInformation = InternalTypeInfo.of(tableSchema.toPhysicalRowDataType().getLogicalType());
+        final InternalTypeInfo<?> typeInformation =
+                InternalTypeInfo.of(tableSchema.toPhysicalRowDataType().getLogicalType());
 
         JdbcOutputFormatBuilder builder = this.builder;
 

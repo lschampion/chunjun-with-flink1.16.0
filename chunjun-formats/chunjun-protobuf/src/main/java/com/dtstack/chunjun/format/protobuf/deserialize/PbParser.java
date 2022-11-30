@@ -23,9 +23,7 @@ import com.dtstack.chunjun.throwable.ChunJunRuntimeException;
 
 import java.lang.reflect.Method;
 
-/**
- * trans byte[] to protobuf object by protobuf parseFrom method
- */
+/** trans byte[] to protobuf object by protobuf parseFrom method */
 public class PbParser {
 
     private Class messageClass;

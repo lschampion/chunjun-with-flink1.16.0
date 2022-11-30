@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.pgwal.source;
 
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.pgwal.conf.PGWalConf;
 import com.dtstack.chunjun.connector.pgwal.converter.PGWalColumnConverter;
 import com.dtstack.chunjun.connector.pgwal.converter.PGWalRowConverter;
@@ -39,7 +39,7 @@ public class PgwalSourceFactory extends SourceFactory {
 
     private final PGWalConf conf;
 
-    public PgwalSourceFactory(SyncConf config, StreamExecutionEnvironment env) {
+    public PgwalSourceFactory(SyncConfig config, StreamExecutionEnvironment env) {
         super(config, env);
         conf =
                 JsonUtil.toObject(

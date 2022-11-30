@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.mongodb.datasync;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.mongodb.converter.MongodbColumnConverter;
 import com.dtstack.chunjun.connector.mongodb.converter.MongodbRawTypeConverter;
 import com.dtstack.chunjun.connector.mongodb.converter.MongodbRowConverter;
@@ -39,14 +39,14 @@ public class MongoConverterFactory {
     RowType rowType;
     List<String> fieldNames;
     List<String> fieldTypes;
-    MongodbDataSyncConf mongodbDataSyncConf;
+    MongodbDataSyncConfig mongodbDataSyncConfig;
 
-    public MongoConverterFactory(MongodbDataSyncConf mongodbDataSyncConf) {
-        this.mongodbDataSyncConf = mongodbDataSyncConf;
+    public MongoConverterFactory(MongodbDataSyncConfig mongodbDataSyncConf) {
+        this.mongodbDataSyncConfig = mongodbDataSyncConfig;
         fieldNames = new ArrayList<>();
         fieldTypes = new ArrayList<>();
         List<FieldConf> fields = mongodbDataSyncConf.getColumn();
-        for (FieldConf field : fields) {
+        for (FieldConfig field : fields) {
             fieldNames.add(field.getName());
             fieldTypes.add(field.getType());
         }

@@ -19,7 +19,7 @@
 package com.dtstack.chunjun.connector.pgwal.conf;
 
 import com.dtstack.chunjun.config.CommonConfig;
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.annotation.JsonProperty;
@@ -60,7 +60,7 @@ public class PGWalConf extends CommonConfig {
 
     private Integer statusInterval = 10;
     private Long lsn = 0L;
-    private List<FieldConf> column;
+    private List<FieldConfig> column;
     private boolean slotAvailable;
 
     public void setCredentials(String username, String password) {
@@ -170,12 +170,12 @@ public class PGWalConf extends CommonConfig {
     }
 
     @Override
-    public List<FieldConf> getColumn() {
+    public List<FieldConfig> getColumn() {
         return column;
     }
 
     @Override
-    public void setColumn(List<FieldConf> column) {
+    public void setColumn(List<FieldConfig> column) {
         this.column = column;
     }
 

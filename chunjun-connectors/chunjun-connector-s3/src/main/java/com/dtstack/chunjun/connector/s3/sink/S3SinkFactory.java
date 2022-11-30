@@ -19,7 +19,7 @@
 package com.dtstack.chunjun.connector.s3.sink;
 
 import com.dtstack.chunjun.config.SpeedConf;
-import com.dtstack.chunjun.config.SyncConf;
+import com.dtstack.chunjun.config.SyncConfig;
 import com.dtstack.chunjun.connector.s3.conf.S3Conf;
 import com.dtstack.chunjun.connector.s3.converter.S3ColumnConverter;
 import com.dtstack.chunjun.connector.s3.converter.S3RawConverter;
@@ -40,7 +40,7 @@ public class S3SinkFactory extends SinkFactory {
     private final S3Conf s3Conf;
     private final SpeedConf speedConf;
 
-    public S3SinkFactory(SyncConf syncConf) {
+    public S3SinkFactory(SyncConfig syncConf) {
         super(syncConf);
         s3Conf =
                 GsonUtil.GSON.fromJson(

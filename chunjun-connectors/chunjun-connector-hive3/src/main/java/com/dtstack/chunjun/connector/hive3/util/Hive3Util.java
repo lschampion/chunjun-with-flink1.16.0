@@ -18,7 +18,7 @@
 
 package com.dtstack.chunjun.connector.hive3.util;
 
-import com.dtstack.chunjun.config.FieldConf;
+import com.dtstack.chunjun.config.FieldConfig;
 import com.dtstack.chunjun.connector.hive3.conf.HdfsConf;
 import com.dtstack.chunjun.connector.hive3.converter.HdfsOrcColumnConverter;
 import com.dtstack.chunjun.connector.hive3.converter.HdfsOrcRowConverter;
@@ -157,7 +157,7 @@ public class Hive3Util {
     public static AbstractRowConverter createRowConverter(
             boolean useAbstractBaseColumn,
             String fileType,
-            List<FieldConf> fieldConfList,
+            List<FieldConfig> fieldConfList,
             RawTypeConverter rawTypeConverter,
             HdfsConf hdfsConf) {
         AbstractRowConverter rowConverter;
