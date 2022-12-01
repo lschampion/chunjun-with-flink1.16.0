@@ -52,6 +52,7 @@ Execute the command in the project directory.
 Or execute
 
 ```shell
+mvn spotless:apply
 sh build/build.sh
 ```
 
