@@ -18,7 +18,8 @@
 
 package com.dtstack.chunjun.connector.api;
 
-import com.dtstack.chunjun.connector.jdbc.config.JdbcConf;
+import com.dtstack.chunjun.connector.jdbc.config.JdbcConfig;
+import com.dtstack.chunjun.connector.jdbc.dialect.JdbcDialect;
 import com.dtstack.chunjun.connector.jdbc.source.JdbcInputSplit;
 import com.dtstack.chunjun.connector.jdbc.util.JdbcUtil;
 import com.dtstack.chunjun.constants.Metrics;
@@ -29,7 +30,6 @@ import com.dtstack.chunjun.source.format.BaseRichInputFormat;
 import com.dtstack.chunjun.throwable.ReadRecordException;
 import com.dtstack.chunjun.util.StringUtil;
 
-import org.apache.flink.connector.jdbc.dialect.JdbcDialect;
 import org.apache.flink.core.io.InputSplit;
 import org.apache.flink.table.data.RowData;
 
@@ -50,7 +50,7 @@ public class DatabaseBaseRichInputFormat<T, OUT extends RowData> extends BaseRic
 
     protected static final int resultSetConcurrency = ResultSet.CONCUR_READ_ONLY;
     protected static int resultSetType = ResultSet.TYPE_FORWARD_ONLY;
-    protected JdbcConf jdbcConf;
+    protected JdbcConfig jdbcConf;
     protected JdbcDialect jdbcDialect;
     protected boolean hasNext;
     /** 用户脚本中填写的字段名称集合 */
