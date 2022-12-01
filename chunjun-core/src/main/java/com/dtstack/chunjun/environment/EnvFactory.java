@@ -22,9 +22,12 @@ import com.dtstack.chunjun.enums.ClusterMode;
 import com.dtstack.chunjun.options.Options;
 import com.dtstack.chunjun.util.PropertiesUtil;
 
+import org.apache.flink.configuration.ConfigConstants;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.configuration.GlobalConfiguration;
 import org.apache.flink.configuration.PipelineOptions;
+import org.apache.flink.configuration.RestOptions;
+import org.apache.flink.configuration.WebOptions;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.config.TableConfigOptions;
@@ -43,6 +46,10 @@ public class EnvFactory {
      */
     public static StreamExecutionEnvironment createStreamExecutionEnvironment(Options options) {
         Configuration flinkConf = new Configuration();
+
+        flinkConf.setString(RestOptions.BIND_PORT, "8081");
+        flinkConf.setString(WebOptions.LOG_PATH, "tmp/log/job.log");
+        flinkConf.setString(ConfigConstants.TASK_MANAGER_LOG_PATH_KEY, "tmp/log/job.log");
         Configuration cfg = Configuration.fromMap(PropertiesUtil.confToMap(options.getConfProp()));
         if (StringUtils.isNotEmpty(options.getFlinkConfDir())) {
             flinkConf = GlobalConfiguration.loadConfiguration(options.getFlinkConfDir());

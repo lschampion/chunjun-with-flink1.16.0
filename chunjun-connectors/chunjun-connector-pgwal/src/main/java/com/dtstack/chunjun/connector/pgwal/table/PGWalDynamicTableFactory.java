@@ -28,18 +28,20 @@ import org.apache.flink.configuration.ConfigOption;
 import org.apache.flink.configuration.ConfigOptions;
 import org.apache.flink.configuration.ReadableConfig;
 import org.apache.flink.connector.jdbc.dialect.JdbcDialect;
-import org.apache.flink.connector.jdbc.dialect.JdbcDialects;
-import org.apache.flink.connector.jdbc.internal.options.JdbcLookupOptions;
-import org.apache.flink.connector.jdbc.internal.options.JdbcOptions;
+import org.apache.flink.connector.jdbc.dialect.JdbcDialectLoader;
 import org.apache.flink.connector.jdbc.internal.options.JdbcReadOptions;
+import org.apache.flink.connector.jdbc.table.JdbcConnectorOptions;
 import org.apache.flink.connector.jdbc.table.JdbcDynamicTableFactory;
 import org.apache.flink.connector.jdbc.table.JdbcDynamicTableSource;
-import org.apache.flink.formats.json.JsonOptions;
+import org.apache.flink.formats.json.JsonFormatOptions;
+import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.TableSchema;
+import org.apache.flink.table.catalog.ResolvedSchema;
 import org.apache.flink.table.connector.source.DynamicTableSource;
 import org.apache.flink.table.data.RowData;
 import org.apache.flink.table.factories.FactoryUtil;
 import org.apache.flink.table.runtime.typeutils.InternalTypeInfo;
+import org.apache.flink.table.types.DataType;
 import org.apache.flink.table.types.logical.RowType;
 import org.apache.flink.table.utils.TableSchemaUtils;
 import org.apache.flink.util.Preconditions;
@@ -171,7 +173,7 @@ public class PGWalDynamicTableFactory extends JdbcDynamicTableFactory {
         options.add(PGWalOptions.STATUS_INTERVAL_CONFIG_OPTION);
         options.add(PGWalOptions.TABLES_CONFIG_OPTION);
         options.add(PGWalOptions.TEMPORARY_CONFIG_OPTION);
-        options.add(JsonOptions.TIMESTAMP_FORMAT);
+        options.add(JsonFormatOptions.TIMESTAMP_FORMAT);
         return options;
     }
 
@@ -183,13 +185,18 @@ public class PGWalDynamicTableFactory extends JdbcDynamicTableFactory {
 
         helper.validate();
         validateConfigOptions(config);
+        // TODO: lisai 此处应该使用 ResolvedSchema 还是 Schema？
+        ResolvedSchema resolvedSchema = context.getCatalogTable().getResolvedSchema();
+        Schema unresolvedSchema = context.getCatalogTable().getUnresolvedSchema();
+        DataType dataType = resolvedSchema.toSourceRowDataType();
         TableSchema physicalSchema =
                 TableSchemaUtils.getPhysicalSchema(context.getCatalogTable().getSchema());
         return new JdbcDynamicTableSource(
                 getJdbcOptions(helper.getOptions()),
                 getJdbcReadOptions(helper.getOptions()),
-                getJdbcLookupOptions(helper.getOptions()),
-                physicalSchema) {
+                10,
+                null,
+                dataType) {
             @Override
             public ScanRuntimeProvider getScanRuntimeProvider(ScanContext runtimeProviderContext) {
                 final RowType rowType = (RowType) physicalSchema.toRowDataType().getLogicalType();
@@ -246,11 +253,14 @@ public class PGWalDynamicTableFactory extends JdbcDynamicTableFactory {
     }
 
     private void validateConfigOptions(ReadableConfig config) {
-        String jdbcUrl = config.get(URL);
-        final Optional<JdbcDialect> dialect = JdbcDialects.get(jdbcUrl);
-        checkState(dialect.isPresent(), "Cannot handle such jdbc url: " + jdbcUrl);
+        String jdbcUrl = config.get(JdbcConnectorOptions.URL);
+        JdbcDialect jdbcDialect =
+                JdbcDialectLoader.load(jdbcUrl, ClassLoader.getSystemClassLoader());
+        checkState(jdbcDialect == null, "Cannot handle such jdbc url: " + jdbcUrl);
 
-        checkAllOrNone(config, new ConfigOption[] {USERNAME, PASSWORD});
+        checkAllOrNone(
+                config,
+                new ConfigOption[] {JdbcConnectorOptions.USERNAME, JdbcConnectorOptions.PASSWORD});
 
         checkAllOrNone(
                 config,
@@ -293,17 +303,21 @@ public class PGWalDynamicTableFactory extends JdbcDynamicTableFactory {
         }
     }
 
-    private JdbcOptions getJdbcOptions(ReadableConfig readableConfig) {
-        final String url = readableConfig.get(URL);
-        final JdbcOptions.Builder builder =
-                JdbcOptions.builder()
-                        .setDBUrl(url)
-                        .setTableName(readableConfig.get(TABLE_NAME))
-                        .setDialect(JdbcDialects.get(url).get());
+    private org.apache.flink.connector.jdbc.internal.options.JdbcConnectorOptions getJdbcOptions(
+            ReadableConfig readableConfig) {
+        final String jdbcUrl = readableConfig.get(JdbcConnectorOptions.URL);
+        JdbcDialect jdbcDialect =
+                JdbcDialectLoader.load(jdbcUrl, ClassLoader.getSystemClassLoader());
+
+        org.apache.flink.connector.jdbc.internal.options.JdbcConnectorOptions.Builder builder =
+                org.apache.flink.connector.jdbc.internal.options.JdbcConnectorOptions.builder();
+        builder.setDBUrl(jdbcUrl)
+                .setTableName(readableConfig.get(JdbcConnectorOptions.TABLE_NAME))
+                .setDialect(jdbcDialect);
 
         readableConfig.getOptional(DRIVER).ifPresent(builder::setDriverName);
-        readableConfig.getOptional(USERNAME).ifPresent(builder::setUsername);
-        readableConfig.getOptional(PASSWORD).ifPresent(builder::setPassword);
+        readableConfig.getOptional(JdbcConnectorOptions.USERNAME).ifPresent(builder::setUsername);
+        readableConfig.getOptional(JdbcConnectorOptions.PASSWORD).ifPresent(builder::setPassword);
         return builder.build();
     }
 
@@ -337,12 +351,12 @@ public class PGWalDynamicTableFactory extends JdbcDynamicTableFactory {
         return builder.build();
     }
 
-    private JdbcLookupOptions getJdbcLookupOptions(ReadableConfig readableConfig) {
-        return new JdbcLookupOptions(
-                readableConfig.get(LOOKUP_CACHE_MAX_ROWS),
-                readableConfig.get(LOOKUP_CACHE_TTL).toMillis(),
-                readableConfig.get(LOOKUP_MAX_RETRIES));
-    }
+    //    private JdbcLookupOptions getJdbcLookupOptions(ReadableConfig readableConfig) {
+    //        return new JdbcLookupOptions(
+    //                readableConfig.get(LOOKUP_CACHE_MAX_ROWS),
+    //                readableConfig.get(LOOKUP_CACHE_TTL).toMillis(),
+    //                readableConfig.get(LOOKUP_MAX_RETRIES));
+    //    }
 
     private PGWalConf getConf(ReadableConfig config) {
         PGWalConf conf = new PGWalConf();

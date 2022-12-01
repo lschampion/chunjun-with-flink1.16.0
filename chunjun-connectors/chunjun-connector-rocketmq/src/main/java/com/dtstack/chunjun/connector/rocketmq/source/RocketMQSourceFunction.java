@@ -34,6 +34,7 @@ import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
+import org.apache.flink.calcite.shaded.com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.runtime.state.CheckpointListener;
 import org.apache.flink.runtime.state.FunctionInitializationContext;
@@ -42,8 +43,6 @@ import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 import org.apache.flink.streaming.api.operators.StreamingRuntimeContext;
 import org.apache.flink.util.Preconditions;
-
-import org.apache.flink.shaded.curator4.com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import org.apache.commons.collections.map.LinkedMap;
 import org.apache.commons.lang3.Validate;

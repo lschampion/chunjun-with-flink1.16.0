@@ -20,16 +20,25 @@ package com.dtstack.chunjun.connector.api;
 
 import org.apache.flink.api.dag.Transformation;
 import org.apache.flink.table.api.ExplainDetail;
+import org.apache.flink.table.api.PlanReference;
+import org.apache.flink.table.delegation.ExtendedOperationExecutor;
+import org.apache.flink.table.delegation.InternalPlan;
 import org.apache.flink.table.delegation.Parser;
 import org.apache.flink.table.delegation.Planner;
 import org.apache.flink.table.operations.ModifyOperation;
 import org.apache.flink.table.operations.Operation;
 
+import java.io.IOException;
 import java.util.List;
 
 public class NoOPPlanner implements Planner {
     @Override
     public Parser getParser() {
+        return null;
+    }
+
+    @Override
+    public ExtendedOperationExecutor getExtendedOperationExecutor() {
         return null;
     }
 
@@ -44,6 +53,26 @@ public class NoOPPlanner implements Planner {
     }
 
     @Override
+    public InternalPlan loadPlan(PlanReference planReference) throws IOException {
+        return null;
+    }
+
+    @Override
+    public InternalPlan compilePlan(List<ModifyOperation> list) {
+        return null;
+    }
+
+    @Override
+    public List<Transformation<?>> translatePlan(InternalPlan internalPlan) {
+        return null;
+    }
+
+    @Override
+    public String explainPlan(InternalPlan internalPlan, ExplainDetail... explainDetails) {
+        return null;
+    }
+
+    //    @Override
     public String[] getCompletionHints(String statement, int position) {
         return new String[0];
     }

@@ -211,7 +211,7 @@
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-json</artifactId>
-			<version>${flink.version}</version>
+			<version>${flink.json}</version>
 		</dependency>
 
 	</dependencies>

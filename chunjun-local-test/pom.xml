@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-json</artifactId>
-			<version>${flink.version}</version>
+			<version>${flink.json}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.flink</groupId>
@@ -369,22 +369,22 @@
 		<!--本地测试模块 end, 添加新的dependency请按照分组添加在对应位置，不要无脑地加在最前或最后方 -->
 
 		<!-- ddlconvent plugin -->
-		<dependency>
-			<groupId>com.dtstack.chunjun</groupId>
-			<artifactId>chunjun-ddl-mysql</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.30</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.dtstack.chunjun</groupId>-->
+<!--			<artifactId>chunjun-ddl-mysql</artifactId>-->
+<!--			<version>${project.version}</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>mysql</groupId>-->
+<!--			<artifactId>mysql-connector-java</artifactId>-->
+<!--			<version>8.0.30</version>-->
+<!--		</dependency>-->
 
 
-		<dependency>
-			<groupId>com.dtstack.chunjun</groupId>
-			<artifactId>chunjun-ddl-oracle</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.dtstack.chunjun</groupId>-->
+<!--			<artifactId>chunjun-ddl-oracle</artifactId>-->
+<!--			<version>${project.version}</version>-->
+<!--		</dependency>-->
 	</dependencies>
 </project>

@@ -24,6 +24,7 @@ import org.apache.flink.table.catalog.CatalogManager;
 import org.apache.flink.table.catalog.FunctionCatalog;
 import org.apache.flink.table.delegation.Executor;
 import org.apache.flink.table.module.ModuleManager;
+import org.apache.flink.table.resource.ResourceManager;
 
 public class ExtendTableEnvironmentImpl extends TableEnvironmentImpl
         implements ExtendTableEnvironment {
@@ -31,6 +32,7 @@ public class ExtendTableEnvironmentImpl extends TableEnvironmentImpl
     protected ExtendTableEnvironmentImpl(
             CatalogManager catalogManager,
             ModuleManager moduleManager,
+            ResourceManager resourceManager,
             TableConfig tableConfig,
             Executor executor,
             FunctionCatalog functionCatalog,
@@ -38,12 +40,12 @@ public class ExtendTableEnvironmentImpl extends TableEnvironmentImpl
         super(
                 catalogManager,
                 moduleManager,
+                resourceManager,
                 tableConfig,
                 executor,
                 functionCatalog,
                 new NoOPPlanner(),
-                true,
-                userClassLoader);
+                true);
     }
 
     public static ExtendTableEnvironment create(CDCSettings settings) {

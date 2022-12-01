@@ -61,8 +61,8 @@ import static com.dtstack.chunjun.connector.rocketmq.table.RocketMQOptions.OPTIO
 import static com.dtstack.chunjun.connector.rocketmq.table.RocketMQOptions.OPTIONAL_START_TIME_MILLS;
 import static com.dtstack.chunjun.connector.rocketmq.table.RocketMQOptions.OPTIONAL_TAG;
 import static com.dtstack.chunjun.connector.rocketmq.table.RocketMQOptions.OPTIONAL_TIME_ZONE;
+import static com.dtstack.chunjun.connector.rocketmq.table.RocketMQOptions.SCAN_PARALLELISM;
 import static com.dtstack.chunjun.connector.rocketmq.table.RocketMQOptions.TOPIC;
-import static org.apache.flink.table.factories.FactoryUtil.SCAN_PARALLELISM;
 import static org.apache.flink.table.factories.FactoryUtil.createTableFactoryHelper;
 
 /** @author shitou @date 2022/5/17 * */

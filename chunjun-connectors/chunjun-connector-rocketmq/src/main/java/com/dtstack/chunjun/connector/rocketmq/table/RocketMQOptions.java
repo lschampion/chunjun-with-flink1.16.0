@@ -119,4 +119,12 @@ public class RocketMQOptions {
 
     public static final ConfigOption<Boolean> OPTIONAL_WRITE_KEYS_TO_BODY =
             ConfigOptions.key("write.keys.to-body").booleanType().defaultValue(false);
+
+    // TODO: lisai SCAN_PARALLELISM 不存在了，手动设置成字符串
+    // import static org.apache.flink.table.factories.FactoryUtil.SCAN_PARALLELISM;
+    public static final ConfigOption<Integer> SCAN_PARALLELISM =
+            ConfigOptions.key("scan.parallelism")
+                    .intType()
+                    .noDefaultValue()
+                    .withDescription("Defines a custom parallelism for the scan. ");
 }

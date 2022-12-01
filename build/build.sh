@@ -64,13 +64,13 @@ fi
 
 # build module
 if [[ -z $modules ]]; then
-  mvn -T 1C clean package -DskipTests
+  mvn -T 1C clean install -DskipTests
 else
   echo "build modules: $modules"
   # TODO get vaild module path
   vaild_module_path=$modules
   echo "build module paths: $vaild_module_path"
-  mvn -T 1C clean package -DskipTests -pl $vaild_module_path -am
+  mvn -T 1C clean install -DskipTests -pl $vaild_module_path -am
 fi
 
 
